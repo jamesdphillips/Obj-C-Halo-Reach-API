@@ -21,7 +21,7 @@
 @synthesize gametypes;
 
 - (id)initWithAPIData:(NSDictionary*)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = [[data objectForKey:@"id"] intValue];
 		self.name = [data objectForKey:@"name"];
 		self.description = [data objectForKey:@"description"];
@@ -35,7 +35,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.description = [aDecoder decodeObjectForKey:@"d"];
@@ -64,7 +64,7 @@
 }
 
 - (NSString *)twoTimesScaleImageURL {
-	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/playlists/%d2x.jpg",self.ID];
+	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/playlists/%d@2x.jpg",self.ID];
 }
 
 - (void)dealloc {
@@ -82,7 +82,7 @@
 @synthesize playlists;
 
 - (id)initWithAPIData:(NSArray *)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		NSMutableDictionary *_playlists = [NSMutableDictionary dictionaryWithCapacity:[data count]];
 		for ( NSDictionary *playlist in data ) {
 			NSNumber *key = [playlist objectForKey:@"id"];
@@ -95,7 +95,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.playlists = [aDecoder decodeObjectForKey:@"p"];
 	}
 	return self;

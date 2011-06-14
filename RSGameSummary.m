@@ -27,7 +27,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data gamertag:(NSString *)gamertag {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// ID
 		self.ID = [[data objectForKey:@"GameId"] intValue];
@@ -80,7 +80,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.ID = [aDecoder decodeIntForKey:@"ID"];
 		

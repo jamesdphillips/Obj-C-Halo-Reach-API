@@ -19,7 +19,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.identifier = [[data objectForKey:@"Id"] intValue];
 		
@@ -32,7 +32,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.identifier = [aDecoder decodeIntForKey:@"i"];
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.description = [aDecoder decodeObjectForKey:@"d"];
@@ -62,6 +62,10 @@
 
 - (NSString*)imageURL {
 	return [self imageURLWithSize:NO];
+}
+
+- (NSComparisonResult)compare:(RSEnemiesMetadata*)comp {
+	return [self.name caseInsensitiveCompare:comp.name];
 }
 
 - (void)dealloc {

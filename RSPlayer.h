@@ -57,6 +57,9 @@ typedef enum {
 	
 	// Commendations
 	NSDictionary *commendations;
+    
+    // Credits
+    NSUInteger creditsLifetime;
 }
 
 @property (copy,nonatomic) NSString *gamertag;
@@ -77,6 +80,7 @@ typedef enum {
 @property (retain,nonatomic) NSDate *firstPlayedDate;
 @property (retain,nonatomic) NSDate *lastPlayedDate;
 @property (copy,nonatomic) NSDictionary *commendations;
+@property (nonatomic) NSUInteger creditsLifetime;
 
 - (id)initWithAPIData:(NSDictionary *)data;
 - (id)initWithDictionary:(NSDictionary*)data;

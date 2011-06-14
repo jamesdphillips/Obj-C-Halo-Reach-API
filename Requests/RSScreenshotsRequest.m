@@ -9,6 +9,7 @@
 #import "RSScreenshotsRequest.h"
 #import "ReachStatsService.h"
 #import "RSFile.h"
+#import "RFC3875+NSString.h"
 
 
 /**
@@ -29,7 +30,7 @@ NSString * const rsScreenshotsPath = @"file/screenshots/";
  **/
 - (id)initWithGamertag:(NSString *)_gamertag delegate:(id)_delegate {
 	
-	if ( self = [super initWithDelegate:_delegate] ) {
+	if ( (self = [super initWithDelegate:_delegate]) ) {
 		[self setGamertag:_gamertag];
 	}
 	return self;
@@ -40,8 +41,7 @@ NSString * const rsScreenshotsPath = @"file/screenshots/";
  Initialize with gamertag
  **/
 - (id)initWithGamertag:(NSString*)_gamertag {
-	[self initWithGamertag:_gamertag delegate:nil];
-	return self;
+	return [self initWithGamertag:_gamertag delegate:nil];
 }
 
 
@@ -53,7 +53,7 @@ NSString * const rsScreenshotsPath = @"file/screenshots/";
 				  rsBaseURI,
 				  rsScreenshotsPath,
 				  rsAPIKey,
-				  [_gamertag stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+				  [_gamertag stringByAddingRFC3875PercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 - (id)handleResponse:(NSDictionary *)dict {

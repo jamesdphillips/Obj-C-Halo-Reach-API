@@ -11,7 +11,6 @@ extern NSString * const rsBaseURI;
 extern NSString * const rsAelatisReachURI;
 extern NSString * const rsMetadataPath;
 extern NSString * const rsFileSharePath;
-extern NSString * const rsFileDetailsPath;
 
 
 @interface ReachStatsService : NSObject {

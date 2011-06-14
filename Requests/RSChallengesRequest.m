@@ -7,12 +7,13 @@
 //
 
 #import "RSChallengesRequest.h"
+#import "RFC3875+NSString.h"
 
 
 @implementation RSChallengesRequest
 
 - (id)initWithGamertag:(NSString*)_gamertag delegate:(id)_delegate {
-	if ( self = [super initWithDelegate:_delegate] ) {
+	if ( (self = [super initWithDelegate:_delegate]) ) {
 		[self setGamertag:_gamertag];
 	}
 	return self;
@@ -23,8 +24,8 @@
 }
 
 - (void)setGamertag:(NSString*)_gamertag {
-	[self setURL:[NSString stringWithFormat:@"http://api.reachservicerecord.com:8124/challenges/%@",
-				  [_gamertag stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+	[self setURL:[NSString stringWithFormat:@"http://api.reachservicerecord.com/mobile_challenges/%@",
+				  [_gamertag stringByAddingRFC3875PercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 - (id)handleResponse:(id)dict {
@@ -38,8 +39,8 @@
 	return response;
 }
 
-+ (NSString *)checkResponseForErrors:(NSDictionary*)_response request:(ASIHTTPRequest*)request {
-	if ( [request responseStatusCode] == 200 || [request didUseCachedResponse] ) {
++ (NSString *)checkResponseForErrors:(NSDictionary*)_response request:(NSHTTPURLResponse *)_httpResponse {
+	if ( [_httpResponse statusCode] == 200 ) {
 		return nil;
 	}
 	return @"Unable to contact server!";

@@ -22,7 +22,7 @@
 @synthesize seasonID;
 
 - (id)initWithAPIData:(NSDictionary*)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.currentDailyRating = [[data objectForKey:@"current_daily_rating"] intValue];
 		self.division = [[data objectForKey:@"division"] intValue];
@@ -40,7 +40,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.currentDailyRating = [aDecoder decodeIntForKey:@"cDR"];
 		self.division = [aDecoder decodeIntForKey:@"d"];
 		self.divisionPercentile = [aDecoder decodeFloatForKey:@"dP"];

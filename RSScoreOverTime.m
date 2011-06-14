@@ -18,7 +18,7 @@
 #pragma mark Initialize
 
 - (id)initWithTime:(NSUInteger)t score:(NSUInteger)s {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.time = t;
 		self.score = s;
 	}
@@ -34,7 +34,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.time  = [aDecoder decodeIntForKey:@"t"];
 		self.score = [aDecoder decodeIntForKey:@"s"];

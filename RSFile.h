@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface RSFile : NSObject {
+@interface RSFile : NSObject <NSCoding> {
 	
 	// File ID
 	NSUInteger ID;
@@ -35,6 +35,12 @@
 	// fullScreenURL
 	NSString *fullScreenURL;
 	
+	// Likes
+	NSUInteger likes;
+	NSUInteger downloadCount;
+	
+	// Rendered
+	NSString *renderJobResolution;
 }
 
 @property (nonatomic) NSUInteger ID;
@@ -47,6 +53,9 @@
 @property (nonatomic,copy) NSString *category;
 @property (nonatomic,copy) NSString *fullScreenURL;
 @property (nonatomic) NSUInteger mapID;
+@property (nonatomic) NSUInteger likes;
+@property (nonatomic) NSUInteger downloadCount;
+@property (nonatomic,copy) NSString *renderJobResolution;
 
 - (id)initWithDictionary:(NSDictionary *)data;
 

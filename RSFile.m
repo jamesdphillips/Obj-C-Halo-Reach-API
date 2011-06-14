@@ -19,13 +19,15 @@
 @synthesize category;
 @synthesize mapID;
 @synthesize fullScreenURL;
+@synthesize likes, downloadCount;
+@synthesize renderJobResolution;
 
 
 #pragma mark -
 #pragma mark Initialize
 - (id)initWithDictionary:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// ID
 		self.ID = [[data objectForKey:@"FileId"] intValue];
@@ -48,11 +50,56 @@
 		// Map
 		self.mapID = [[data objectForKey:@"MapId"] intValue];
 		
-		// Full URL
+		// Image URLs
 		self.fullScreenURL = [data objectForKey:@"ScreenshotFullSizeUrl"];
+		
+		// Likes
+		self.likes = [[data objectForKey:@"LikesCount"] intValue];
+		self.downloadCount = [[data objectForKey:@"DownloadCount"] intValue];
+		
+		// rendered
+		self.renderJobResolution = [data objectForKey:@"RenderJobResolution"];
 	}
 	
 	return self;
+}
+
+
+#pragma mark -
+#pragma mark NSCoding
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if ( (self = [super init]) ) {
+		self.ID = [aDecoder decodeIntForKey:@"I"];
+		self.author = [aDecoder decodeObjectForKey:@"a"];
+		self.originalAuthor = [aDecoder decodeObjectForKey:@"oA"];
+		self.title = [aDecoder decodeObjectForKey:@"t"];
+		self.description = [aDecoder decodeObjectForKey:@"d"];
+		self.createdAt = [aDecoder decodeObjectForKey:@"cA"];
+		self.updatedAt = [aDecoder decodeObjectForKey:@"uA"];
+		self.category = [aDecoder decodeObjectForKey:@"c"];
+		self.mapID = [aDecoder decodeIntForKey:@"mI"];
+		self.fullScreenURL = [aDecoder decodeObjectForKey:@"fSU"];
+		self.likes = [aDecoder decodeIntForKey:@"l"];
+		self.downloadCount = [aDecoder decodeIntForKey:@"dC"];
+		self.renderJobResolution = [aDecoder decodeObjectForKey:@"rJR"];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeInt:self.ID forKey:@"I"];
+	[aCoder encodeObject:self.author forKey:@"a"];
+	[aCoder encodeObject:self.originalAuthor forKey:@"oA"];
+	[aCoder encodeObject:self.title forKey:@"t"];
+	[aCoder encodeObject:self.description forKey:@"d"];
+	[aCoder encodeObject:self.createdAt forKey:@"cA"];
+	[aCoder encodeObject:self.updatedAt forKey:@"uA"];
+	[aCoder encodeObject:self.category forKey:@"c"];
+	[aCoder encodeInt:self.mapID forKey:@"mI"];
+	[aCoder encodeObject:self.fullScreenURL forKey:@"fSU"];
+	[aCoder encodeInt:self.likes forKey:@"l"];
+	[aCoder encodeInt:self.downloadCount forKey:@"dC"];
+	[aCoder encodeObject:self.renderJobResolution forKey:@"rJR"];
 }
 
 
@@ -67,6 +114,7 @@
 	[self.updatedAt release];
 	[self.category release];
 	[self.fullScreenURL release];
+	[self.renderJobResolution release];
 	[super dealloc];
 }
 
@@ -111,46 +159,5 @@
 - (NSDate *)dateCreatedAt {
 	return [ReachStatsService formatBungieDate:self.createdAt];
 }
-
-
-#pragma mark -
-#pragma mark RSJSONParserDelegate
-
-- (void)parse_FileId:(NSNumber*)fileID {
-	self.ID = [fileID intValue];
-}
-
-- (void)parse_Author:(NSString*)_author {
-	self.author = _author;
-}
-
-- (void)parse_OriginalAuthor:(NSString*)_oauthor {
-	self.originalAuthor = _oauthor;
-}
-
-- (void)parse_Title:(NSString*)_title {
-	self.title = _title;
-}
-
-- (void)parse_Description:(NSString*)_desc {
-	self.description = _desc;
-}
-
-- (void)parse_CreateDate:(NSString*)_createdat {
-	self.createdAt = _createdat;
-}
-
-- (void)parse_ModifiedDate:(NSString*)_moddate {
-	self.updatedAt = _moddate;
-}
-
-- (void)parse_MapId:(NSNumber*)_mapid {
-	self.mapID = [_mapid intValue];
-}
-
-- (void)parse_ScreenshotFullSizeUrl:(NSString*)fsurl {
-	self.fullScreenURL = fsurl;
-}
-
 
 @end

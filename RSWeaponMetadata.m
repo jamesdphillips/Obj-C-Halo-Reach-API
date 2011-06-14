@@ -16,7 +16,7 @@
 
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.identifier = [[data objectForKey:@"Id"] intValue];
 		
@@ -32,7 +32,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.identifier = [aDecoder decodeIntForKey:@"id"];
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.description = [aDecoder decodeObjectForKey:@"d"];
@@ -56,6 +56,10 @@
 
 - (NSString*)doubleScaleImageURL {
 	return [self imageURLWithSize:YES];
+}
+
+- (NSComparisonResult)compare:(RSWeaponMetadata*)comp {
+	return [self.name caseInsensitiveCompare:comp.name];
 }
 
 - (void)dealloc {

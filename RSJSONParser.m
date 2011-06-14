@@ -20,14 +20,14 @@
 #pragma mark Initialize
 
 - (id)initWithObject:(id)obj {
-	if ( self = [self init] ) {
+	if ( (self = [self init]) ) {
 		[self addObject:obj];
 	}
 	return self;
 }
 
 - (id)init {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// Delegate
 		self.delegate = self;

@@ -53,6 +53,10 @@
 	
 	// Player
 	RSPlayer *playerDetail;
+    NSString *killedMost;
+    NSInteger killedMostCount;
+    NSString *killedByMost;
+    NSInteger killedByMostCount;
 	
 	// Weapons
 	NSDictionary *weaponCarnage;
@@ -95,6 +99,10 @@
 @property (nonatomic) NSUInteger uniqueTotalMedalCount;
 
 @property (retain,nonatomic) RSPlayer *playerDetail;
+@property (copy,nonatomic) NSString *killedMost;
+@property (nonatomic) NSInteger killedMostCount;
+@property (copy,nonatomic) NSString *killedByMost;
+@property (nonatomic) NSInteger killedByMostCount;
 
 @property (copy,nonatomic) NSDictionary *weaponCarnage;
 @property (nonatomic) NSUInteger headshots;
@@ -149,6 +157,7 @@
 + (RSAICarnage *)AICarnageWithAPIData:(NSDictionary *)data;
 + (RSAICarnage *)AICarnageWithAPIData:(NSDictionary *)data name:(NSString *)n description:(NSString *)d imageName:(NSString *)iname;
 - (NSString*)imageURL;
+- (NSString*)doubleSizedImageURL;
 - (NSComparisonResult)compare:(RSAICarnage*)obj;
 @end
 
@@ -179,5 +188,6 @@
 + (RSWeaponCarnage *)weaponCarnageWithAPIData:(NSDictionary *)data;
 + (RSWeaponCarnage *)weaponCarnageWithAPIData:(NSDictionary *)data name:(NSString *)n description:(NSString *)d;
 - (NSString*)imageURL;
+- (NSString*)doubleSizedImageURL;
 - (NSComparisonResult)compare:(RSWeaponCarnage*)obj;
 @end

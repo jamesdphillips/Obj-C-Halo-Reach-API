@@ -19,7 +19,7 @@
 @synthesize medalChestCompletion;
 
 - (id)initWithAPIData:(NSDictionary*)apiData {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// DeathsByDamageType
 		NSArray *dbdt = [apiData objectForKey:@"DeathsByDamageType"];
@@ -85,7 +85,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.deathsByDamageType = [aDecoder decodeObjectForKey:@"dbdt"];
 		self.killsByDamageType = [aDecoder decodeObjectForKey:@"kbdt"];
 		self.medalCountsByType = [aDecoder decodeObjectForKey:@"mcbt"];

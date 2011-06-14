@@ -9,7 +9,6 @@
 #import "RSPlayerDetails.h"
 #import "RSRankMetadataRequest.h"
 #import "RSPlaylistMetadataRequest.h"
-#import "RSCreditsRequest.h"
 
 
 @implementation RSPlayerDetails
@@ -24,7 +23,7 @@
  */
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super initWithAPIData:[data objectForKey:@"Player"]] ) {
+	if ( (self = [super initWithAPIData:[data objectForKey:@"Player"]]) ) {
 		
 		// aiStats
 		self.AIStats = nil;
@@ -145,13 +144,15 @@
 		// Player Model
 		self.lowResPlayerModelURL = [data objectForKey:@"PlayerModelUrl"] ? [@"http://www.bungie.net/" stringByAppendingString:[data objectForKey:@"PlayerModelUrl"]] : nil;
 		self.highResPlayerModelURL = [data objectForKey:@"PlayerModelUrlHiRes"] ? [@"http://www.bungie.net/" stringByAppendingString:[data objectForKey:@"PlayerModelUrlHiRes"]] : nil;
+        
+        self.creditsToNextRank = NSUIntegerMax;
 	}
 	
 	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super initWithCoder:aDecoder] ) {
+	if ( (self = [super initWithCoder:aDecoder]) ) {
 		self.AIStats = [aDecoder decodeObjectForKey:@"AIS"];
 		self.campaignAggregate = [aDecoder decodeObjectForKey:@"cA"];
 		self.firefightAggregate = [aDecoder decodeObjectForKey:@"fA"];
@@ -179,6 +180,7 @@
 		//self.rankCredits = [aDecoder decodeIntForKey:@"rC"];
 		//self.credits = [aDecoder decodeIntForKey:@"cR"];
 		//self.creditsToNextRank = [aDecoder decodeIntForKey:@"cTNR"];
+        self.creditsToNextRank = NSUIntegerMax;
 	}
 	return self;
 }
@@ -277,16 +279,7 @@
  * Ensure that you call his method in a thread or similar as it may take a long time to complete.
  */
 - (NSUInteger)credits {
-	if ( !credits ) {
-		RSCreditsRequest *r = [[RSCreditsRequest alloc] init];
-		[r setGamertag:self.gamertag];
-		[r setLastModified:[self.lastPlayedDate timeIntervalSinceReferenceDate]];
-		NSDictionary *c_info = [r startSynchronous];
-		[r release];
-		self.credits = [[c_info objectForKey:@"credits"] intValue];
-		self.creditsToNextRank = [[c_info objectForKey:@"nextrank"] intValue];
-	}
-	return credits;
+	return (self.creditsLifetime - self.rankCredits);
 }
 
 /**
@@ -295,15 +288,16 @@
  * Ensure that you call his method in a thread or similar as it may take a long time to complete.
  */
 - (NSUInteger)creditsToNextRank {
-	if ( !
-		creditsToNextRank ) {
-		RSCreditsRequest *r = [[RSCreditsRequest alloc] init];
-		[r setGamertag:self.gamertag];
-		[r setLastModified:[self.lastPlayedDate timeIntervalSinceReferenceDate]];
-		NSDictionary *c_info = [r startSynchronous];
-		[r release];
-		self.credits = [[c_info objectForKey:@"credits"] intValue];
-		self.creditsToNextRank = [[c_info objectForKey:@"nextrank"] intValue];
+	if ( creditsToNextRank == NSUIntegerMax && self.gamertag ) {
+        creditsToNextRank = 0;
+		NSArray *ranks = [RSRankMetadataRequest getAsArray];
+        for ( unsigned int i = 0; i < [ranks count]; i++ ) {
+            RSRankMetadata *rankMetadata = [ranks objectAtIndex:i];
+            if ( [[rankMetadata key] isEqualToString:self.rankIndex] && (i + 1) < [ranks count] ) {
+                creditsToNextRank = ([(RSRankMetadata*)[ranks objectAtIndex:(i + 1)] credits] - [rankMetadata credits]);
+                break;
+            }
+        }
 	}
 	return creditsToNextRank;
 }
@@ -314,7 +308,7 @@
  * Ensure that you call his method in a thread or similar as it may take a long time to complete.
  **/
 - (NSUInteger)rankTotalCredits {
-	return [self credits] + [self rankCredits];
+	return self.creditsLifetime;
 }
 
 /**

@@ -16,7 +16,7 @@
 
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.identifier = [[data objectForKey:@"Id"] intValue];
 		
@@ -29,7 +29,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.identifier = [aDecoder decodeIntForKey:@"i"];
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.imageName = [aDecoder decodeObjectForKey:@"iN"];

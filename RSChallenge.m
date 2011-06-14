@@ -22,7 +22,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary*)data weekly:(BOOL)w {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// Description
 		self.name = [data objectForKey:@"name"];
@@ -64,7 +64,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.description = [aDecoder decodeObjectForKey:@"de"];
 		self.imageIndex = [aDecoder decodeIntForKey:@"iI"];

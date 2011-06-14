@@ -22,7 +22,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super initWithAPIData:data] ) {
+	if ( (self = [super initWithAPIData:data]) ) {
 		
 		/**
 		 ** MapName
@@ -72,7 +72,7 @@
 #pragma mark NSCoder
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super initWithCoder:aDecoder]) {
+	if ((self = [super initWithCoder:aDecoder])) {
 		
 		self.mapName =	[aDecoder decodeObjectForKey:@"mapName"];
 		self.players =	[aDecoder decodeObjectForKey:@"players"];

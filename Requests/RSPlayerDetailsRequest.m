@@ -8,6 +8,8 @@
 
 #import "RSPlayerDetailsRequest.h"
 #import "ReachStatsService.h"
+#import "RFC3875+NSString.h"
+
 
 /**
  PlayerDetails API Path
@@ -26,7 +28,7 @@ NSString * const rsPlayerDetailsPath = @"player/details/";
  Initialize with gamertag and delegate
  **/
 - (id)initWithGamertag:(NSString*)_gamertag delegate:(id)_delegate {
-	if ( self = [super initWithDelegate:_delegate] ) {
+	if ( (self = [super initWithDelegate:_delegate]) ) {
 		[self setGamertag:_gamertag];
 	}
 	return self;
@@ -49,11 +51,16 @@ NSString * const rsPlayerDetailsPath = @"player/details/";
 				  rsBaseURI,
 				  rsPlayerDetailsPath,
 				  rsAPIKey,
-				  [_gamertag stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+				  [_gamertag stringByAddingRFC3875PercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 - (id)handleResponse:(NSDictionary *)dict {
-	RSPlayerDetails *playerDetails = [[[RSPlayerDetails alloc] initWithAPIData:dict] autorelease];
+    RSPlayerDetails *playerDetails = nil;
+    @try {
+        playerDetails = [[[RSPlayerDetails alloc] initWithAPIData:dict] autorelease];
+    } @catch (id e) {
+        NSLog(@"Error in response");
+    }
 	return [super handleResponse:playerDetails];
 }
 

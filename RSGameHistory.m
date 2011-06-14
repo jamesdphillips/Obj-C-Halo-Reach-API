@@ -20,7 +20,7 @@
  **/
 - (id)initWithSummaries:(NSArray *)s gamertag:(NSString *)g variant:(NSString *)v count:(NSUInteger)c page:(NSUInteger)p hasMore:(BOOL)m {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// Info
 		self.gamertag = g;
@@ -52,7 +52,7 @@
 }
 
 - (id)init {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.summaries = [NSMutableArray array];
 	}
 	return self;
@@ -133,7 +133,9 @@
 	
 	RSGameHistory *gh = nil;
 	if ( [self.summaries count] > 0 ) {
+#ifdef DEBUG
 		NSLog(@"first summary: %d",self.firstSummary);
+#endif
 		gh = [RSGameHistoryRequest historyWithGamertag:self.gamertag
 															 gametype:self.variant
 													summariesBeforeGID:self.firstSummary

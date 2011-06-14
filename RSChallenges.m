@@ -19,7 +19,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary*)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// Weekly
 		self.weekly = [RSChallenge challengeWithAPIData:[data objectForKey:@"weekly"] weekly:YES];
@@ -46,7 +46,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.weekly = [aDecoder decodeObjectForKey:@"w"];
 		self.daily  = [aDecoder decodeObjectForKey:@"d"];
 	}
@@ -91,6 +91,10 @@
 		}	
 	}
 	return sc;
+}
+
+- (NSArray*)challenges {
+	return [NSArray arrayWithObjects:self.weekly,[self.daily objectAtIndex:0],[self.daily objectAtIndex:1],[self.daily objectAtIndex:2],[self.daily objectAtIndex:3],nil];
 }
 
 @end

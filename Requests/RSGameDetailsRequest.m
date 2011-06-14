@@ -25,7 +25,7 @@ NSString * const rsGameDetailsPath = @"game/details/";
  Initialize with the Game ID
  **/
 - (id)initWithGameID:(NSUInteger)GID {
-	if ( self = [self init] ) {
+	if ( (self = [self init]) ) {
 		[self setGameID:GID];
 	}
 	return self;
@@ -56,7 +56,7 @@ NSString * const rsGameDetailsPath = @"game/details/";
 }
 
 - (RSGameDetails*)checkForSavedCopy {
-	return [[NSKeyedUnarchiver unarchiveObjectWithFile:[self filePath]] retain];
+	return [NSKeyedUnarchiver unarchiveObjectWithFile:[self filePath]];
 }
 
 - (id)handleResponse:(id)dict {
@@ -66,7 +66,7 @@ NSString * const rsGameDetailsPath = @"game/details/";
 }
 
 - (id)startSynchronous {
-	RSGameDetails *details = [[self checkForSavedCopy] autorelease];
+	RSGameDetails *details = [self checkForSavedCopy];
 	if (!details)  details = [super startSynchronous];
 	return details;
 }

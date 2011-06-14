@@ -19,7 +19,7 @@
 @synthesize onyx;
 
 - (id)initWithAPIData:(NSDictionary*)data {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.ID = [[data objectForKey:@"key"] intValue];
 		self.iron = [[data objectForKey:@"iron"] intValue];
 		self.bronze = [[data objectForKey:@"bronze"] intValue];
@@ -31,7 +31,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.iron = [aDecoder decodeIntForKey:@"i"];
 		self.bronze = [aDecoder decodeIntForKey:@"b"];

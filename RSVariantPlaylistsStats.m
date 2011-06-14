@@ -15,7 +15,7 @@
 @synthesize medals,gamesPlayed,assists,betrayals,deaths,firstPlace,kills,playtime,score,placedTopHalf,placedTopThird,wins;
 
 - (id)initWithVariantID:(NSUInteger)ID playlist:(RSPlaylistStats*)playlist  {
-	if ( self = [self initWithVariantID:ID] ) {
+	if ( (self = [self initWithVariantID:ID]) ) {
 		//[self setVariantID:ID];
 		[self addPlaylist:playlist];
 	}
@@ -23,7 +23,7 @@
 }
 
 - (id)initWithPlaylist:(RSPlaylistStats*)playlist {
-	if ( self = [self initWithVariantID:playlist.variantID] ) {
+	if ( (self = [self initWithVariantID:playlist.variantID]) ) {
 		//[self setVariantID:playlist.hopperID];
 		[self addPlaylist:playlist];
 	}
@@ -31,7 +31,7 @@
 }
 
 - (id)initWithVariantID:(NSUInteger)ID {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.variantID = ID;
 		self.playlistStats = [NSMutableDictionary dictionary];
 	}
@@ -39,7 +39,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.variantID = [aDecoder decodeIntForKey:@"vID"];
 		self.playlistStats = [aDecoder decodeObjectForKey:@"pStats"];
 		self.medals = [aDecoder decodeIntForKey:@"m"];

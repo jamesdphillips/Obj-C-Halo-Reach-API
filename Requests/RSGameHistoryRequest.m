@@ -8,11 +8,14 @@
 
 #import "RSGameHistoryRequest.h"
 #import "ReachStatsService.h"
+#import "RFC3875+NSString.h"
+
 
 /**
  GameHistory API Path
  **/
 NSString * const rsGameHistoryPath = @"player/gamehistory/";
+
 
 /**
  Reach Stats Game History Request.
@@ -26,7 +29,7 @@ NSString * const rsGameHistoryPath = @"player/gamehistory/";
  **/
 - (id)initWithGamertag:(NSString *)_gamertag gametype:(NSString *)_gametype summariesBeforeGID:(NSUInteger)_beforeGID summariesAfterGID:(NSUInteger)_afterGID startPage:(NSUInteger)_pageNum count:(NSUInteger)_count delegate:(id)_delegate {
 	
-	if ( self = [super initWithDelegate:_delegate] ) {
+	if ( (self = [super initWithDelegate:_delegate]) ) {
 		
 		// Gametype
 		if ( !_gametype )
@@ -209,7 +212,7 @@ NSString * const rsGameHistoryPath = @"player/gamehistory/";
 	 rsBaseURI,
 	 rsGameHistoryPath,
 	 rsAPIKey,
-	 [[self gamertag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+	 [[self gamertag] stringByAddingRFC3875PercentEscapesUsingEncoding:NSUTF8StringEncoding],
 	 [self gametype],
 	 [self startPage]];
 	[self setURL:urlString];
@@ -229,11 +232,11 @@ NSString * const rsGameHistoryPath = @"player/gamehistory/";
 		[self buildURL];
 		
 		// Start
-		[self.httpRequest startSynchronous];
+		[self startSynchronousConnection];
 		
 		// Check
 		NSDictionary *apiData = [self checkResponse:[self.jsonParser root]];
-		NSString *error = [[self class] checkResponseForErrors:apiData request:self.httpRequest];
+		NSString *error = [[self class] checkResponseForErrors:apiData request:self.httpResponse];
 		if (error)
 			return nil;
 		
@@ -289,15 +292,15 @@ NSString * const rsGameHistoryPath = @"player/gamehistory/";
 	[self  createHTTPRequest];
 	[self  createJSONParser];
 	[self  buildURL];
-	self.httpRequest.delegate = self;
 	[super startAsynchronous];
 }
 
-- (void)apiRequestFinished:(ASIHTTPRequest *)request {
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
 	
 	// Check
 	NSDictionary *apiData = [self checkResponse:[self.jsonParser root]];
-	NSString *error = [[self class] checkResponseForErrors:apiData request:self.httpRequest];
+	NSString *error = [[self class] checkResponseForErrors:apiData request:self.httpResponse];
 	
 	if (error)
 		[self.delegate performSelector:@selector(requestFailedWithError:) withObject:error];

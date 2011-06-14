@@ -24,7 +24,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		/**
 		 ** Commendations

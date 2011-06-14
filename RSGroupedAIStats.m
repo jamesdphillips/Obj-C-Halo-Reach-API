@@ -17,7 +17,7 @@
 @synthesize totalScoreCoop,totalScoreSolo,totalWavesCompleted;
 
 - (id)initWithAPIData:(NSDictionary *)apiData {
-	if ( self = [super initWithAPIData:apiData] ) {
+	if ( (self = [super initWithAPIData:apiData]) ) {
 		
 		NSArray *kbe = [apiData objectForKey:@"KillsByEnemyTypeClass"];
 		NSMutableDictionary *kbe_dict = [NSMutableDictionary dictionaryWithCapacity:[kbe count]];
@@ -75,7 +75,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super initWithCoder:aDecoder] ) {
+	if ( (self = [super initWithCoder:aDecoder]) ) {
 		self.killsByEnemy = [aDecoder decodeObjectForKey:@"kbe"];
 		self.deathsByEnemy = [aDecoder decodeObjectForKey:@"dbe"];
 		self.pointsByEnemy = [aDecoder decodeObjectForKey:@"pbe"];

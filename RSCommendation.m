@@ -16,7 +16,7 @@
 
 - (id)initWithAPIData:(NSDictionary *)data metadata:(RSCommendationMetadata*)metadata {
 	
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		
 		self.ID = metadata.ID;
 		
@@ -45,7 +45,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super initWithCoder:aDecoder] ) {
+	if ( (self = [super initWithCoder:aDecoder]) ) {
 		
 		self.total = [aDecoder decodeIntForKey:@"commTotal"];
 		self.rank  = [aDecoder decodeIntForKey:@"commRank" ];

@@ -16,7 +16,7 @@
 @synthesize credits;
 
 - (id)initWithAPIData:(NSDictionary*)apiData {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.key =  [apiData objectForKey:@"Key"];
 		self.name = [apiData objectForKey:@"Value"];
@@ -26,7 +26,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.key  = [aDecoder decodeObjectForKey:@"k"];
 		self.name = [aDecoder decodeObjectForKey:@"n"];
 		self.credits = [aDecoder decodeIntForKey:@"c"];

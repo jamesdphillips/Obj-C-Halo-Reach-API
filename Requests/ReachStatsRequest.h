@@ -7,19 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ASIHTTPRequest.h"
 #import <YAJL/YAJL.h>
 
 
-@interface ReachStatsRequest : NSObject <ASIHTTPRequestDelegate> {
+@interface ReachStatsRequest : NSObject {
 	
-	ASIHTTPRequest *httpRequest;
 	YAJLDocument *jsonParser;
 	id response;
 	id delegate;
 }
 
-@property (nonatomic,retain) ASIHTTPRequest *httpRequest;
+@property (nonatomic,retain) NSMutableURLRequest *httpRequest;
+@property (nonatomic,retain) NSHTTPURLResponse *httpResponse;
+@property (nonatomic,retain) NSURLConnection *httpConnection;
 @property (nonatomic,retain) YAJLDocument *jsonParser;
 @property (nonatomic,retain) id response;
 @property (nonatomic,assign) id delegate;
@@ -32,7 +32,7 @@
 - (void)setURL:(NSString *)_url;
 - (void)createHTTPRequest;
 - (void)createJSONParser;
-+ (NSString *)checkResponseForErrors:(NSDictionary*)_response request:(ASIHTTPRequest*)request;
++ (NSString *)checkResponseForErrors:(NSDictionary*)_response request:(NSHTTPURLResponse*)_httpResponse;
 - (NSDictionary*)checkResponse:(NSDictionary*)rawResponse;
 - (void)cacheResponse:(NSDictionary*)rawResponse;
 - (NSString*)cacheFileLocationWithUniqueKey:(NSString*)key;
@@ -40,6 +40,8 @@
 - (NSDictionary*)getCachedResponse;
 - (NSString *)keyForRequest;
 - (NSString *)hashForUniqueKey:(NSString*)key;
+- (void)startSynchronousConnection;
+- (void)parseJSON:(NSData *)data;
 
 @end
 

@@ -27,5 +27,6 @@
 - (NSArray*)dailySortedByCredits;
 - (NSArray*)dailySortedByCompletion;
 - (NSArray*)dailySortBySelector:(SEL)key;
+- (NSArray*)challenges;
 
 @end

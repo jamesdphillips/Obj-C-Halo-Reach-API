@@ -12,12 +12,11 @@
 /**
  * Constants
  */
-NSString * const rsAPIKey = @"YOUR_APIKEY_HERE!";
+NSString * const rsAPIKey = @"";
 NSString * const rsBaseURI = @"http://www.bungie.net/api/reach/reachapijson.svc/";
 NSString * const rsAelatisReachURI = @"http://reachstats.aelatis.com";
 NSString * const rsMetadataPath = @"game/metadata/";
 NSString * const rsFileSharePath = @"file/share/";
-NSString * const rsFileDetailsPath = @"file/details/";
 
 
 /**

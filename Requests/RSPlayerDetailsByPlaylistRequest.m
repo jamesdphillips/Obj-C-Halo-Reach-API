@@ -8,6 +8,7 @@
 
 #import "RSPlayerDetailsByPlaylistRequest.h"
 #import "ReachStatsService.h"
+#import "RFC3875+NSString.h"
 
 
 @implementation RSPlayerDetailsByPlaylistRequest
@@ -20,7 +21,7 @@
 				  rsBaseURI,
 				  rsPlayerDetailsPath,
 				  rsAPIKey,
-				  [_gamertag stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+				  [_gamertag stringByAddingRFC3875PercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 @end

@@ -23,7 +23,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.ID = [[data objectForKey:@"Id"] intValue];
 		
@@ -50,7 +50,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.iron = [aDecoder decodeIntForKey:@"i"];
@@ -75,6 +75,14 @@
 	[aCoder encodeInt:self.max forKey:@"m"];
 	[aCoder encodeObject:self.name forKey:@"n"];
 	[aCoder encodeObject:self.description forKey:@"d"];
+}
+
+
+#pragma mark -
+#pragma mark Comprare
+
+- (NSComparisonResult)compare:(RSCommendationMetadata*)comp {
+	return [self.name caseInsensitiveCompare:comp.name];
 }
 
 

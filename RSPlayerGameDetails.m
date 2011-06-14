@@ -34,7 +34,7 @@
 #pragma mark Initialize
 
 - (id)initWithID:(NSUInteger)i deaths:(NSUInteger)d headshots:(NSUInteger)h kills:(NSUInteger)k penalties:(NSUInteger)p {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = i;
 		self.deaths = d;
 		self.headshots = h;
@@ -45,7 +45,7 @@
 }
 
 - (id)initWithAPIData:(NSDictionary *)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = [[data objectForKey:@"WeaponId"] intValue];
 		self.deaths = [[data objectForKey:@"Deaths"] intValue];
 		self.headshots = [[data objectForKey:@"Headshots"] intValue];
@@ -71,7 +71,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.deaths = [aDecoder decodeIntForKey:@"d"];
@@ -96,6 +96,10 @@
 
 - (NSString*)imageURL {
 	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/weapons/%d.png",self.ID];
+}
+
+- (NSString*)doubleSizedImageURL {
+	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/weapons/%d@2x.png",self.ID];
 }
 
 - (NSComparisonResult)compare:(RSWeaponCarnage*)obj {
@@ -135,7 +139,7 @@
 #pragma mark Initialize
 
 - (id)initWithAPIData:(NSDictionary *)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		
 		/**
@@ -222,7 +226,7 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.penalties = [aDecoder decodeIntForKey:@"p"];
 		self.betrayals = [aDecoder decodeIntForKey:@"b"];
@@ -282,6 +286,10 @@
 	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/enemies/%@.png",self.imageName];
 }
 
+- (NSString*)doubleSizedImageURL {
+	return [NSString stringWithFormat:@"http://i.reachservicerecord.com/enemies/%@@2x.png",self.imageName];
+}
+
 - (NSComparisonResult)compare:(RSAICarnage*)obj {
 	if ( self.killCount > obj.killCount )
 		return NSOrderedAscending;
@@ -318,7 +326,7 @@
 @synthesize averageDeathDistanceMeters, averageKillDistanceMeters;
 @synthesize	team, teamScore;
 @synthesize medalsOverTime,medalCounts,multiMedalCount,otherMedalCount,spreeMedalCount,styleMedalCount,totalMedalCount,uniqueMultiMedalCount,uniqueOtherMedalCount,uniqueSpreeMedalCount,uniqueStyleMedalCount,uniqueTotalMedalCount;
-@synthesize	playerDetail;
+@synthesize	playerDetail, killedMost, killedMostCount, killedByMost, killedByMostCount;
 @synthesize weaponCarnage,headshots;
 
 
@@ -326,7 +334,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		
 		/**
@@ -440,7 +448,14 @@
 		 ** Player Details
  		 */
 		
+        // Details
 		self.playerDetail = [[[RSPlayer alloc] initWithAPIData:[data objectForKey:@"PlayerDetail"]] autorelease];
+        
+        // Most
+        self.killedMost = [data objectForKey:@"PlayerKilledMost"];
+        self.killedMostCount = [[data objectForKey:@"KilledMostCount"] intValue];
+        self.killedByMost = [data objectForKey:@"PlayerKilledByMost"];
+        self.killedByMostCount = [[data objectForKey:@"KilledMostByCount"] intValue];
 		
 		/** 
 		 ** Weapons
@@ -472,7 +487,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		self.AICarnage = [aDecoder decodeObjectForKey:@"AICarnage"];
 		
@@ -511,6 +526,10 @@
 		self.uniqueTotalMedalCount = [aDecoder decodeIntForKey:@"uniqueTotalMedalCount"];
 		
 		self.playerDetail = [aDecoder decodeObjectForKey:@"playerDetail"];
+        self.killedByMost = [aDecoder decodeObjectForKey:@"kBM"];
+        self.killedMost = [aDecoder decodeObjectForKey:@"kM"];
+        self.killedMostCount = [aDecoder decodeIntForKey:@"kMC"];
+        self.killedByMostCount = [aDecoder decodeIntForKey:@"kBMC"];
 		
 		self.weaponCarnage = [aDecoder decodeObjectForKey:@"weaponCarnage"];
 		self.headshots =	 [aDecoder decodeIntForKey:@"headshots"];
@@ -543,20 +562,24 @@
 	[aCoder encodeInt:self.team forKey:@"team"];
 	[aCoder encodeInt:self.teamScore forKey:@"teamScore"];
 	
-	[aCoder encodeObject:self.medalsOverTime	forKey:@"medalsOverTime"];
-	[aCoder encodeObject:self.medalCounts		forKey:@"medalCounts"];
-	[aCoder encodeInt:self.multiMedalCount		forKey:@"multiMedalCount"];
-	[aCoder encodeInt:self.otherMedalCount		forKey:@"otherMedalCount"];
-	[aCoder encodeInt:self.spreeMedalCount		forKey:@"spreeMedalCount"];
-	[aCoder encodeInt:self.styleMedalCount		forKey:@"styleMedalCount"];
-	[aCoder encodeInt:self.totalMedalCount		forKey:@"totalMedalCount"];
+	[aCoder encodeObject:self.medalsOverTime	 forKey:@"medalsOverTime"];
+	[aCoder encodeObject:self.medalCounts		 forKey:@"medalCounts"];
+	[aCoder encodeInt:self.multiMedalCount		 forKey:@"multiMedalCount"];
+	[aCoder encodeInt:self.otherMedalCount		 forKey:@"otherMedalCount"];
+	[aCoder encodeInt:self.spreeMedalCount		 forKey:@"spreeMedalCount"];
+	[aCoder encodeInt:self.styleMedalCount		 forKey:@"styleMedalCount"];
+	[aCoder encodeInt:self.totalMedalCount		 forKey:@"totalMedalCount"];
 	[aCoder encodeInt:self.uniqueMultiMedalCount forKey:@"uniqueMultiMedalCount"];
 	[aCoder encodeInt:self.uniqueOtherMedalCount forKey:@"uniqueOtherMedalCount"];
 	[aCoder encodeInt:self.uniqueSpreeMedalCount forKey:@"uniqueSpreeMedalCount"];
 	[aCoder encodeInt:self.uniqueStyleMedalCount forKey:@"uniqueStyleMedalCount"];
 	[aCoder encodeInt:self.uniqueTotalMedalCount forKey:@"uniqueTotalMedalCount"];
 	
-	[aCoder encodeObject:self.playerDetail forKey:@"playerDetail"];
+	[aCoder encodeObject:self.playerDetail  forKey:@"playerDetail"];
+    [aCoder encodeObject:self.killedMost    forKey:@"kM"];
+    [aCoder encodeObject:self.killedByMost  forKey:@"kBM"];
+    [aCoder encodeInt:self.killedMostCount  forKey:@"kMC"];
+    [aCoder encodeInt:self.killedByMostCount forKey:@"kBMC"];
 	
 	[aCoder encodeObject:self.weaponCarnage	forKey:@"weaponCarnage"];
 	[aCoder encodeInt:self.headshots		forKey:@"headshots"];
@@ -573,6 +596,8 @@
 	[self.medalsOverTime release];
 	[self.medalCounts release];
 	[self.weaponCarnage release];
+    [self.killedMost release];
+    [self.killedByMost release];
 	self.playerDetail = nil;
 	[super dealloc];
 }

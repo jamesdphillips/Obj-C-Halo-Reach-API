@@ -14,14 +14,14 @@
 @synthesize playlistInfo;
 
 - (id)initWithAPIData:(NSDictionary *)apiData metadata:(RSPlaylistMetadata*)mData {
-	if ( self = [super initWithAPIData:apiData] ) {
+	if ( (self = [super initWithAPIData:apiData]) ) {
 		self.playlistInfo = [mData playlistWithID:self.hopperID];
 	}
 	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super initWithCoder:aDecoder] ) {
+	if ( (self = [super initWithCoder:aDecoder]) ) {
 		self.playlistInfo = [aDecoder decodeObjectForKey:@"playlistInfo"];
 	}
 	return self;

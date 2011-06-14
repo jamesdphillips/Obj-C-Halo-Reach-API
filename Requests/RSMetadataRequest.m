@@ -28,7 +28,7 @@
  * Initialize with method and delegate
  */
 - (id)initWithMethod:(NSString *)_method delegate:(id)_delegate {
-	if ( self = [super initWithDelegate:_delegate] ) {
+	if ( (self = [super initWithDelegate:_delegate]) ) {
 		[self setMethod:_method];
 		[self setMaxAge:120];
 	}
@@ -66,7 +66,7 @@
 
 - (void)createHTTPRequest {
 	[super createHTTPRequest];
-	[self.httpRequest setCachePolicy:ASIIgnoreCachePolicy];
+	[self.httpRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 }
 
 /**
@@ -74,7 +74,7 @@
  */
 - (void)setMethod:(NSString*)_method {
 	method = [_method copy];
-	[self setURL:[NSString stringWithFormat:@"http://api.reachservicerecord.com:8124/metadata/%@",_method]];
+	[self setURL:[NSString stringWithFormat:@"http://api.reachservicerecord.com/metadata/%@",_method]];
 }
 
 /**
@@ -106,19 +106,19 @@
 	
 		// If saved send etag
 		if (saved)
-		[self.httpRequest addRequestHeader:@"if-none-match" value:[saved objectForKey:@"hash"]];
+            [self.httpRequest setValue:[saved objectForKey:@"hash"] forHTTPHeaderField:@"if-none-match"];
 		
 		// Send
-		[self.httpRequest startSynchronous];
+		[self startSynchronousConnection];
 		
 		// Check if new
-		if ( [self.httpRequest responseStatusCode] == 200 ) {
+		if ( [self.httpResponse statusCode] == 200 ) {
 			
 			[self handleResponse:self.jsonParser.root];
 			NSDictionary *file = [NSDictionary
 								  dictionaryWithObjects:
 								  [NSArray arrayWithObjects:
-								   [[self.httpRequest responseHeaders] objectForKey:@"Etag"],
+								   [[self.httpResponse allHeaderFields] objectForKey:@"Etag"],
 								   response,
 								   [NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate]],
 								   nil]
@@ -142,55 +142,62 @@
 	}
 	return [self response];
 }
+//
+//- (void)startAsynchronous {
+//	
+//	// Grab cached
+//	NSDictionary *saved = [self getSaved];
+//	
+//	// If saved send etag
+//	if (saved) {
+//		[self.httpRequest addRequestHeader:@"if-none-match" value:[saved objectForKey:@"hash"]];
+//		self.response = [saved objectForKey:@"data"];
+//	}
+//	
+//	// Send
+//	[super startAsynchronous];
+//}
 
-- (void)startAsynchronous {
-	
-	// Grab cached
-	NSDictionary *saved = [self getSaved];
-	
-	// If saved send etag
-	if (saved) {
-		[self.httpRequest addRequestHeader:@"if-none-match" value:[saved objectForKey:@"hash"]];
-		self.response = [saved objectForKey:@"data"];
-	}
-	
-	// Send
-	[super startAsynchronous];
-}
+//- (void)apiRequestFailed:(ASIHTTPRequest *)request {
+//	if ( self.response ) {
+//		[self.delegate performSelector:@selector(requestCompletedWithResponse:)
+//							withObject:self.response];
+//	} else {
+//		[self.delegate performSelector:@selector(requestFailedWithError:)
+//							withObject:@"Unable to contact API"];
+//	}
+//}
+//
+//- (void)apiRequestFinished:(ASIHTTPRequest *)request {
+//	if ( [self.httpRequest responseStatusCode] == 200 ) {
+//		[self handleResponse:[self.jsonParser root]];
+//		NSDictionary *file = [NSDictionary
+//							   dictionaryWithObjects:
+//							   [NSArray arrayWithObjects:
+//								[[request responseHeaders] objectForKey:@"Etag"],
+//								self.response,
+//								nil]
+//							   forKeys:
+//							   [NSArray arrayWithObjects:
+//								@"hash",
+//								@"data",
+//								nil]];
+//		[NSKeyedArchiver archiveRootObject:file toFile:[self getSavedPath]];
+//	}
+//	if ( self.response ) {
+//		[self.delegate performSelector:@selector(requestCompletedWithResponse:)
+//							withObject:self.response];
+//	} else {
+//		[self.delegate performSelector:@selector(requestFailedWithError:)
+//							withObject:@"Unable to contact API"];
+//	}
+//}
 
-- (void)apiRequestFailed:(ASIHTTPRequest *)request {
-	if ( self.response ) {
-		[self.delegate performSelector:@selector(requestCompletedWithResponse:)
-							withObject:self.response];
-	} else {
-		[self.delegate performSelector:@selector(requestFailedWithError:)
-							withObject:@"Unable to contact API"];
++ (NSString *)checkResponseForErrors:(NSDictionary*)_response request:(NSHTTPURLResponse *)_httpResponse {
+	if ( [_httpResponse statusCode] == 200 ) {
+		return nil;
 	}
-}
-
-- (void)apiRequestFinished:(ASIHTTPRequest *)request {
-	if ( [self.httpRequest responseStatusCode] == 200 ) {
-		[self handleResponse:[self.jsonParser root]];
-		NSDictionary *file = [NSDictionary
-							   dictionaryWithObjects:
-							   [NSArray arrayWithObjects:
-								[[request responseHeaders] objectForKey:@"Etag"],
-								self.response,
-								nil]
-							   forKeys:
-							   [NSArray arrayWithObjects:
-								@"hash",
-								@"data",
-								nil]];
-		[NSKeyedArchiver archiveRootObject:file toFile:[self getSavedPath]];
-	}
-	if ( self.response ) {
-		[self.delegate performSelector:@selector(requestCompletedWithResponse:)
-							withObject:self.response];
-	} else {
-		[self.delegate performSelector:@selector(requestFailedWithError:)
-							withObject:@"Unable to contact API"];
-	}
+	return @"Unable to contact the API!";
 }
 
 - (void)dealloc {

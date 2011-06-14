@@ -22,7 +22,7 @@
 #pragma mark Initialize
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		
 		/** 
@@ -103,7 +103,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.ID = [aDecoder decodeIntForKey:@"I"];
 		self.deathsOverTime = [aDecoder decodeObjectForKey:@"dOT"];
 		self.killsOverTime = [aDecoder decodeObjectForKey:@"kOT"];

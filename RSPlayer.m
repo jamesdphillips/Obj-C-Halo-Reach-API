@@ -22,10 +22,11 @@
 @synthesize gamesPlayed, firstPlayed, lastPlayed, firstPlayedDate, lastPlayedDate;
 @synthesize serviceTag;
 @synthesize commendations;
+@synthesize creditsLifetime;
 
 - (id)initWithAPIData:(NSDictionary *)data {
 	
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		
 		// Gamertag
 		self.gamertag = [data objectForKey:@"gamertag"];
@@ -69,13 +70,16 @@
 		}
 		self.commendations = cDict;
 		[cDict release];
+        
+        // Credits Lifetime
+        self.creditsLifetime = [[data objectForKey:@"credits_lifetime"] unsignedIntegerValue];
 	}
 	
 	return self;
 }
 
 - (id)initWithDictionary:(NSDictionary*)data {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.gamertag = [data objectForKey:@"gamertag"];
 		self.singlePlayerProgress = [[data objectForKey:@"soloProgress"] intValue];
 		self.coopProgress = [[data objectForKey:@"coopProgress"] intValue];
@@ -92,13 +96,14 @@
 		self.lastPlayed = [data objectForKey:@"lastPlayed"];
 		self.serviceTag = [data objectForKey:@"service_tag"];
 		self.commendations = [data objectForKey:@"commendations"];
+        self.creditsLifetime = [[data objectForKey:@"creditsLifetime"] unsignedIntegerValue];
 	}
 	
 	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	if ( self = [super init] ) {
+	if ( (self = [super init]) ) {
 		self.gamertag = [aDecoder decodeObjectForKey:@"g"];
 		self.singlePlayerProgress = [aDecoder decodeIntForKey:@"sPP"];
 		self.coopProgress = [aDecoder decodeIntForKey:@"cP"];
@@ -115,6 +120,7 @@
 		self.firstPlayed = [aDecoder decodeObjectForKey:@"fP"];
 		self.lastPlayed = [aDecoder decodeObjectForKey:@"lP"];
 		self.commendations = [aDecoder decodeObjectForKey:@"c"];
+        self.creditsLifetime = [[aDecoder decodeObjectForKey:@"cL"] unsignedIntegerValue];
 	}
 	return self;
 }
@@ -143,6 +149,7 @@
 	[aCoder encodeObject:self.firstPlayed forKey:@"fP"];
 	[aCoder encodeObject:self.lastPlayed forKey:@"lP"];
 	[aCoder encodeObject:self.commendations forKey:@"c"];
+    [aCoder encodeObject:[NSNumber numberWithUnsignedInteger:self.creditsLifetime] forKey:@"cL"];
 }
 
 - (NSDictionary*)serialize {
@@ -163,6 +170,7 @@
 			[NSString stringWithString:self.firstPlayed], @"firstPlayed",
 			[NSString stringWithString:self.lastPlayed], @"lastPlayed",
 			[NSString stringWithString:self.serviceTag], @"service_tag",
+            [NSNumber numberWithUnsignedInteger:self.creditsLifetime], @"creditsLifetime",
 			//[NSDictionary dictionaryWithDictionary:[self serializeCommendations]], @"commendations",
 			nil
 			];
