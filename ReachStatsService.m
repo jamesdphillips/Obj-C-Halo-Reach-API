@@ -12,7 +12,6 @@
 /**
  * Constants
  */
-NSString * const rsAPIKey = @"";
 NSString * const rsBaseURI = @"http://www.bungie.net/api/reach/reachapijson.svc/";
 NSString * const rsAelatisReachURI = @"http://reachstats.aelatis.com";
 NSString * const rsMetadataPath = @"game/metadata/";

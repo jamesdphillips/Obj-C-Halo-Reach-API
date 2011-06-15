@@ -9,8 +9,10 @@ Framework use in the [Reach Service Record iOS & Android App](http://reachservic
 
 ## Usage
 
-* Update ReachStatsService.m with your API Key
-* If you do not have an API key, you can receive one in your profile page @ Bungie.net
+Add the following to your delegate: 
+> NSString * const rsAPIKey = @"your_api_key"; 
+
+If you do not have an API key, you can receive one in your profile page @ Bungie.net
 * Use the requests found in the requests folder to get the information you want from the API
 ** For the time being read the headers... it is documented fairly well i think...
 ** In the future I will try generate some better documentation... I promise :D
